@@ -1,3 +1,5 @@
+package assignments;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -54,7 +56,6 @@ class Master {
 	double pi = 4.0 * total / totalCount / numWorkers;
 
 	long stopTime = System.currentTimeMillis();
-
 	System.out.println("\nPi : " + pi );
 	System.out.println("Error: " + (Math.abs((pi - Math.PI)) / Math.PI) +"\n");
 
@@ -73,7 +74,8 @@ class Master {
  * Task for running the Monte Carlo simulation.
  */
 class Worker implements Callable<Long> 
-{   
+{
+    public long T1;
     private int numIterations;
     public Worker(int num) 
 	{ 
@@ -83,14 +85,17 @@ class Worker implements Callable<Long>
   @Override
       public Long call() 
       {
+      long startTime = System.currentTimeMillis();
 	  long circleCount = 0;
 	  Random prng = new Random ();
-	  for (int j = 0; j < numIterations; j++) 
+	  for (int j = 0; j < numIterations; j++)
 	      {
 		  double x = prng.nextDouble();
 		  double y = prng.nextDouble();
 		  if ((x * x + y * y) < 1)  ++circleCount;
 	      }
+      long endTime = System.currentTimeMillis();
+      this.T1 = endTime - startTime;
 	  return circleCount;
       }
 }
