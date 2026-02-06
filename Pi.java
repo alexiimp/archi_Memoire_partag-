@@ -85,7 +85,6 @@ class Worker implements Callable<Long>
   @Override
       public Long call() 
       {
-      long startTime = System.currentTimeMillis();
 	  long circleCount = 0;
 	  Random prng = new Random ();
 	  for (int j = 0; j < numIterations; j++)
@@ -94,8 +93,31 @@ class Worker implements Callable<Long>
 		  double y = prng.nextDouble();
 		  if ((x * x + y * y) < 1)  ++circleCount;
 	      }
-      long endTime = System.currentTimeMillis();
-      this.T1 = endTime - startTime;
 	  return circleCount;
       }
+}
+
+class TestPi {
+    public static void main(String[] args) throws Exception
+    {
+        int[] tab = {1,2,4,8,16};
+        long[] temps = new long[tab.length];
+        long totalTemps = 0;
+        long[] result = new long[tab.length];
+        int totalCount = 12000000;
+        for (int i = 0; i < tab.length; ++i){
+            int nb = tab[i];
+            long startTime = System.currentTimeMillis();
+            long total= new Master().doRun(totalCount / nb, nb);
+            long stopTime = System.currentTimeMillis();
+            temps[i] = (stopTime - startTime);
+            totalTemps += temps[i];
+            result[i] = total;
+        }
+        float t1 = (float) temps[0] ;//(float)totalTemps / (float) temps.length; Si on veut la moyenne
+        for (int i = 0; i < tab.length; ++i){
+            System.out.println(t1/(float)temps[i]);
+            //System.out.println("nb Processeurs : "+tab[i] + " SpeedUp : "+t1/(float)temps[i]+ " temps : "+temps[i]+"ms");
+        }
+    }
 }
