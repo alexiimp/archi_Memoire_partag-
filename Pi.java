@@ -108,7 +108,7 @@ class TestPi {
         for (int i = 0; i < tab.length; ++i){
             int nb = tab[i];
             long startTime = System.currentTimeMillis();
-            long total= new Master().doRun(totalCount / nb, nb);
+            long total= new Master().doRun(totalCount, nb);
             long stopTime = System.currentTimeMillis();
             temps[i] = (stopTime - startTime);
             totalTemps += temps[i];
